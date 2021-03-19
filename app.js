@@ -4,6 +4,7 @@ const app = express()
 const mongoose = require('mongoose')
 const port = 3000
 const exphbs = require('express-handlebars')
+const Todo = require('./models/todo')
 
 //setting connection
 mongoose.connect('mongodb://localhost/todo-list',  { useNewUrlParser: true,useUnifiedTopology: true  })
@@ -25,7 +26,10 @@ app.set('view engine', 'hbs')
 
 //setting routers
 app.get('/',(req,res)=>{
-    res.render('index')
+    Todo.find()
+    .lean()
+    .then( todos => res.render('index', {todos}) )
+    .catch( error =>console.log(error))
 })
 
 //start and listen the server
