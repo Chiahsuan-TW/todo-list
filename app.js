@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser')
 const port = 3000
 const exphbs = require('express-handlebars')
 const Todo = require('./models/todo')
@@ -24,6 +25,8 @@ db.once('open',()=>{
 app.engine('hbs', exphbs({defaultLayout:'main', extname: '.hbs'}))
 app.set('view engine', 'hbs')
 
+app.use(bodyParser.urlencoded({extended: true}))
+
 //setting routers
 app.get('/',(req,res)=>{
     Todo.find()
@@ -31,6 +34,18 @@ app.get('/',(req,res)=>{
     .then( todos => res.render('index', {todos}) )
     .catch( error =>console.log(error))
 })
+
+app.get('/todos/new',(req,res)=>{
+    res.render('new')
+})
+
+app.post('/todos', (req,res)=>{
+    const name = req.body.name
+    return Todo.create({name})
+     .then(() => res.redirect('/'))
+     .catch(error => console.log(error) )
+})
+
 
 //start and listen the server
 app.listen(port, ()=>{
