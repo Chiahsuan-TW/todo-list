@@ -1,7 +1,7 @@
 <ul class="list-group">
     {{#each todos}}
         <li class="list-group-item">
-            <div class="row justify-content-between">
+            <div class="row">
                 <div class="col-auto mr-auto">
                     <input style="vertical-alight: middle;"type="checkbox" name="isDone" {{#if this.isDone}} checked {{/if}} disabled>
                     <h4 style="display: inline; vertical-alight: middle;">{{this.name}}</h4>
